@@ -202,7 +202,7 @@ export const Header: React.FC = () => {
         }}
       >
         <Col xs={0} sm={8} md={12}>
-          <AutoComplete
+          {/* <AutoComplete
             style={{
               width: "100%",
               maxWidth: "550px",
@@ -218,11 +218,11 @@ export const Header: React.FC = () => {
               // @ts-expect-error Ant Design Icon's v5.0.1 has an issue with @types/react@^18.2.66
               prefix={<SearchOutlined className={styles.inputPrefix} />}
             />
-          </AutoComplete>
+          </AutoComplete> */}
         </Col>
         <Col>
           <Space size={screens.md ? 32 : 16} align="center">
-            <Dropdown
+            {/* <Dropdown
               menu={{
                 items: menuItems,
                 selectedKeys: currentLocale ? [currentLocale] : [],
@@ -232,12 +232,11 @@ export const Header: React.FC = () => {
                 <Space>
                   <Text className={styles.languageSwitchText}>
                     {currentLocale === "en" ? "English" : "German"}
-                  </Text>
-                  {/* @ts-expect-error Ant Design Icon's v5.0.1 has an issue with @types/react@^18.2.66 */}
-                  <DownOutlined className={styles.languageSwitchIcon} />
+                  </Text> */}
+                  {/* <DownOutlined className={styles.languageSwitchIcon} />
                 </Space>
               </Button>
-            </Dropdown>
+            </Dropdown> */}
 
             <Button
               className={styles.themeSwitch}
@@ -252,7 +251,7 @@ export const Header: React.FC = () => {
               <Text ellipsis className={styles.userName}>
                 {user?.name}
               </Text>
-              <Avatar size="large" src={user?.avatar} alt={user?.name} />
+              <Avatar size="large" src="https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_1280.png" alt={user?.name} />
             </Space>
           </Space>
         </Col>

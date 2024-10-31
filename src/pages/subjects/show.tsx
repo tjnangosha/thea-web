@@ -1,17 +1,19 @@
 import { useShow, useNavigation } from "@refinedev/core";
 import { Flex, Grid } from "antd";
-import type { IUser } from "../../interfaces";
+import type { IUser, ResponseSubject } from "../../interfaces";
 import {
-  CustomerInfoList,
-  CustomerInfoSummary,
+  SubjectInfoList,
+  SubjectInfoSummary,
   CustomerOrderHistory,
   Drawer,
 } from "../../components";
 
-export const CustomerShow = () => {
+export const SubjectShow = () => {
   const { list } = useNavigation();
   const breakpoint = Grid.useBreakpoint();
-  const { query: queryResult } = useShow<IUser>();
+  const { query: queryResult } = useShow<ResponseSubject>({
+    resource: "subjects",
+  });
 
   const { data } = queryResult;
   const user = data?.data;
@@ -19,7 +21,7 @@ export const CustomerShow = () => {
   return (
     <Drawer
       open
-      onClose={() => list("users")}
+      onClose={() => list("subjects")}
       width={breakpoint.sm ? "736px" : "100%"}
     >
       <Flex
@@ -29,9 +31,8 @@ export const CustomerShow = () => {
           padding: "32px",
         }}
       >
-        <CustomerInfoSummary customer={user} />
-        <CustomerInfoList customer={user} />
-        <CustomerOrderHistory customer={user} />
+        <SubjectInfoSummary subject={user} />
+        <SubjectInfoList subject={user} />
       </Flex>
     </Drawer>
   );

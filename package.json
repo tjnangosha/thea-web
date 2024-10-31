@@ -1,5 +1,9 @@
 {
-  "name": "finefoods-antd",
+  "name": "project-thea-web",
+  "author": {
+    "name": "Bodastage Solutions",
+    "email": "info@bodastage.com"
+  },
   "version": "1.0.0",
   "private": true,
   "type": "module",

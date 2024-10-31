@@ -1,12 +1,11 @@
 import { AuthPage as AntdAuthPage, type AuthProps } from "@refinedev/antd";
 import { Flex } from "antd";
 import { Link } from "react-router-dom";
-import { FinefoodsLogoIcon, FinefoodsLogoText } from "../../components";
+import { TheaLogoIcon, TheaLogoText } from "../../components";
 
 const authWrapperProps = {
   style: {
-    background:
-      "radial-gradient(50% 50% at 50% 50%,rgba(255, 255, 255, 0) 0%,rgba(0, 0, 0, 0.5) 100%),url('images/login-bg.png')",
+    background: "#b3bac1 !important",
     backgroundSize: "cover",
   },
 };
@@ -28,17 +27,19 @@ const renderAuthContent = (content: React.ReactNode) => {
             marginBottom: 16,
           }}
         >
-          <FinefoodsLogoIcon
+          {/* <TheaLogoIcon
             style={{
               width: 64,
               height: 64,
               color: "#fff",
             }}
-          />
-          <FinefoodsLogoText
+          /> */}
+          <TheaLogoText
             style={{
-              color: "#fff",
-              width: "300px",
+              color: "black",
+              width: "100%",
+              textAlign: "center",
+              fontWeight: 600,
               height: "auto",
             }}
           />
@@ -49,13 +50,22 @@ const renderAuthContent = (content: React.ReactNode) => {
   );
 };
 
-export const AuthPage: React.FC<AuthProps> = ({ type, formProps }) => {
+export const AuthPage: React.FC<AuthProps> = ({ 
+  type, 
+  formProps,
+  registerLink,
+  forgotPasswordLink,
+  rememberMe,
+}) => {
   return (
     <AntdAuthPage
       type={type}
       wrapperProps={authWrapperProps}
       renderContent={renderAuthContent}
       formProps={formProps}
+      registerLink={registerLink}
+      forgotPasswordLink={forgotPasswordLink}
+      rememberMe={rememberMe}
     />
   );
 };

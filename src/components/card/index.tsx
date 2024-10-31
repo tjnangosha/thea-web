@@ -1,83 +1,17 @@
-import { Card, Flex, Space, Typography } from "antd";
+import { Card, Flex, Space, Typography, Col } from "antd";
 import type { PropsWithChildren } from "react";
 import { useConfigProvider } from "../../context";
+import { UserOutlined } from "@ant-design/icons";
+import { NumberField } from "@refinedev/antd";
 
-export const CardWithContent = (
-  props: PropsWithChildren<{
-    icon?: React.ReactNode;
-    title: string;
-    bodyStyles?: React.CSSProperties;
-  }>,
-) => {
-  const { mode } = useConfigProvider();
-
+export const CardWithMetrics = ({icon, metric, value}) => {
   return (
-    <Card
-      styles={{
-        header: {
-          backgroundColor: mode === "light" ? "#FAFAFA" : "#1F1F1F",
-          padding: "16px",
-        },
-        body: {
-          ...(props?.bodyStyles || {}),
-        },
-      }}
-      title={
-        <Space align="center" size={8}>
-          {props.icon}
-          <Typography.Text
-            style={{
-              fontWeight: 400,
-            }}
-          >
-            {props.title}
-          </Typography.Text>
-        </Space>
-      }
-    >
-      {props.children}
-    </Card>
-  );
-};
-
-export const CardWithPlot = (
-  props: PropsWithChildren<{
-    icon: React.ReactNode;
-    title: string;
-    rightSlot?: React.ReactNode;
-    bodyStyles?: React.CSSProperties;
-  }>,
-) => {
-  return (
-    <Card
-      styles={{
-        header: {
-          padding: "16px 16px 10px 16px",
-          minHeight: "max-content",
-          borderBottom: 0,
-        },
-        body: {
-          padding: "24px 16px 24px 24px",
-          ...(props?.bodyStyles || {}),
-        },
-      }}
-      title={
-        <Flex align="center" justify="space-between">
-          <Flex gap={8}>
-            {props.icon}
-            <Typography.Text
-              style={{
-                fontWeight: 400,
-              }}
-            >
-              {props.title}
-            </Typography.Text>
-          </Flex>
-          {props?.rightSlot}
-        </Flex>
-      }
-    >
-      {props.children}
+    <Card style={{ textAlign: 'center', borderRadius: 8, boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', marginBottom: 20 }}>
+          <div style={{ marginBottom: 8 }}>
+            <img src={icon} alt="icon" style={{ width: 40, height: 40 }} />
+          </div>
+          <h2 style={{ margin: 0 }}>{value}</h2>
+          <p style={{ margin: 0, color: 'gray' }}>{metric}</p>
     </Card>
   );
 };

@@ -2,7 +2,7 @@ import { useNavigation } from "@refinedev/core";
 import { NumberField, useTable } from "@refinedev/antd";
 import { Typography, Table, theme, Space, Flex } from "antd";
 
-import { OrderActions } from "../../../components";
+import {  } from "../../../components";
 
 import type { IOrder } from "../../../interfaces";
 import { useStyles } from "./styled";
@@ -153,7 +153,7 @@ export const RecentOrders: React.FC = () => {
         key="actions"
         className={styles.column}
         align="end"
-        render={(_, record) => <OrderActions record={record} />}
+        render={(_, record) => <ResponseTestActions record={record} />}
       />
     </Table>
   );

@@ -5,19 +5,18 @@ import { Button, Col, Divider, Flex, Row, Skeleton } from "antd";
 import { CloseCircleOutlined, LeftOutlined } from "@ant-design/icons";
 import { ButtonSuccess } from "../../button";
 import {
-  CardWithContent,
   OrderDeliveryMap,
   OrderProducts,
   OrderDeliveryDetails,
 } from "../../components";
 
-export const OrderShow = () => {
+export const TestShow = () => {
   const t = useTranslate();
   const { query: queryResult } = useShow<IOrder>();
   const { data, isLoading } = queryResult;
   const record = data?.data;
   const { mutate } = useUpdate({
-    resource: "orders",
+    resource: "tests",
     id: record?.id.toString(),
   });
 
@@ -94,29 +93,13 @@ export const OrderShow = () => {
         <Row gutter={[16, 16]}>
           <Col xl={15} lg={24} md={24} sm={24} xs={24}>
             <Flex gap={16} vertical>
-              <CardWithContent
-                bodyStyles={{
-                  height: "378px",
-                  overflow: "hidden",
-                  padding: 0,
-                }}
-                title={t("orders.titles.deliveryMap")}
-              >
-                <OrderDeliveryMap order={record} />
-              </CardWithContent>
+              
               <OrderProducts order={record} />
             </Flex>
           </Col>
 
           <Col xl={9} lg={24} md={24} sm={24} xs={24}>
-            <CardWithContent
-              bodyStyles={{
-                padding: 0,
-              }}
-              title={t("orders.titles.deliveryDetails")}
-            >
-              {record && <OrderDeliveryDetails order={record} />}
-            </CardWithContent>
+           
           </Col>
         </Row>
       </List>

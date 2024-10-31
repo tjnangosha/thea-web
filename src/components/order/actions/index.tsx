@@ -1,18 +1,18 @@
 import { useTranslate, useUpdate } from "@refinedev/core";
-import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
+import { FolderAddOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Dropdown, Menu } from "antd";
 import { TableActionButton } from "../../tableActionButton";
-import type { IOrder } from "../../../interfaces";
+import { ResponseSubject } from "../../../interfaces";
 
-type OrderActionProps = {
-  record: IOrder;
+type SubjectActionProps = {
+  subject?: ResponseSubject
 };
 
-export const OrderActions: React.FC<OrderActionProps> = ({ record }) => {
+export const SubjectActions: React.FC<SubjectActionProps> = ({ subject }) => {
   const t = useTranslate();
-  const { mutate } = useUpdate({ resource: "orders", id: record.id });
+  const { mutate } = useUpdate({ resource: "orders", id: subject?.id });
 
-  const moreMenu = (record: IOrder) => (
+  const moreMenu = (subject: ResponseSubject) => (
     <Menu
       mode="vertical"
       onClick={({ domEvent }) => domEvent.stopPropagation()}
@@ -25,12 +25,12 @@ export const OrderActions: React.FC<OrderActionProps> = ({ record }) => {
           alignItems: "center",
           fontWeight: 500,
         }}
-        disabled={record.status.text !== "Pending"}
+        // disabled={subject.status.text !== "Pending"}
         icon={
           // @ts-expect-error Ant Design Icon's v5.0.1 has an issue with @types/react@^18.2.66
-          <CheckCircleOutlined
+          <FolderAddOutlined
             style={{
-              color: "#52c41a",
+              color: "orange",
               fontSize: 17,
               fontWeight: 500,
             }}
@@ -47,7 +47,7 @@ export const OrderActions: React.FC<OrderActionProps> = ({ record }) => {
           });
         }}
       >
-        {t("buttons.accept")}
+        Archive
       </Menu.Item>
       <Menu.Item
         key="reject"
@@ -59,17 +59,17 @@ export const OrderActions: React.FC<OrderActionProps> = ({ record }) => {
         }}
         icon={
           // @ts-expect-error Ant Design Icon's v5.0.1 has an issue with @types/react@^18.2.66
-          <CloseCircleOutlined
+          <DeleteOutlined
             style={{
               color: "#EE2A1E",
               fontSize: 17,
             }}
           />
         }
-        disabled={
-          record.status.text === "Delivered" ||
-          record.status.text === "Cancelled"
-        }
+        // disabled={
+        //   subject.status.text === "Delivered" ||
+        //   subject.status.text === "Cancelled"
+        // }
         onClick={() =>
           mutate({
             values: {
@@ -81,12 +81,12 @@ export const OrderActions: React.FC<OrderActionProps> = ({ record }) => {
           })
         }
       >
-        {t("buttons.reject")}
+       Delete
       </Menu.Item>
     </Menu>
   );
   return (
-    <Dropdown overlay={moreMenu(record)} trigger={["click"]}>
+    <Dropdown overlay={moreMenu(subject)} trigger={["click"]}>
       <TableActionButton />
     </Dropdown>
   );

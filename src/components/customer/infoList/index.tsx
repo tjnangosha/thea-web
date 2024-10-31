@@ -1,5 +1,5 @@
 import React from "react";
-import type { IUser } from "../../../interfaces";
+import type { IUser, ResponseSubject } from "../../../interfaces";
 import {
   PhoneOutlined,
   EnvironmentOutlined,
@@ -7,22 +7,34 @@ import {
   RightCircleOutlined,
   UserOutlined,
   CalendarOutlined,
+  MailOutlined
 } from "@ant-design/icons";
-import { List, Typography, Space, theme, Card } from "antd";
+import { List, Typography, Space, theme, Card, Table, Empty } from "antd";
 import dayjs from "dayjs";
 import { UserStatus } from "../userStatus";
-import { useTranslate } from "@refinedev/core";
+import { useTable, useTranslate } from "@refinedev/core";
 
 type Props = {
-  customer?: IUser;
+  subject?: ResponseSubject;
 };
 
-export const CustomerInfoList = ({ customer }: Props) => {
+const CustomEmpty = () => (
+  <Empty
+    image={Empty.PRESENTED_IMAGE_SIMPLE}
+    description="No tests"
+  />
+);
+
+export const SubjectInfoList = ({ subject }: Props) => {
   const { token } = theme.useToken();
   const t = useTranslate();
 
+  const { tableProps, filters, sorters } = useTable<ResponseSubject>({
+    syncWithLocation: true,
+  });
+
   return (
-    <Card
+    <><Card
       bordered={false}
       styles={{
         body: {
@@ -34,66 +46,18 @@ export const CustomerInfoList = ({ customer }: Props) => {
         itemLayout="horizontal"
         dataSource={[
           {
-            title: t("users.fields.gsm"),
+            title: "Email",
             // @ts-expect-error Ant Design Icon's v5.0.1 has an issue with @types/react@^18.2.66
-            icon: <PhoneOutlined />,
-            value: <Typography.Text>{customer?.gsm}</Typography.Text>,
+            icon: <MailOutlined />,
+            value: <Typography.Text>{subject?.email}</Typography.Text>,
           },
           {
-            title: t("users.fields.addresses"),
-            // @ts-expect-error Ant Design Icon's v5.0.1 has an issue with @types/react@^18.2.66
-            icon: <EnvironmentOutlined />,
-            value: (
-              <Space direction="vertical">
-                {customer?.addresses.map((address, index) => {
-                  const isFirst = index === 0;
-
-                  return (
-                    <Space key={index}>
-                      {isFirst ? (
-                        // @ts-expect-error Ant Design Icon's v5.0.1 has an issue with @types/react@^18.2.66
-                        <CheckCircleOutlined
-                          style={{
-                            color: token.colorSuccess,
-                          }}
-                        />
-                      ) : (
-                        // @ts-expect-error Ant Design Icon's v5.0.1 has an issue with @types/react@^18.2.66
-                        <RightCircleOutlined
-                          style={{
-                            color: token.colorTextTertiary,
-                          }}
-                        />
-                      )}
-                      <Typography.Text
-                        key={index}
-                        style={{
-                          color: isFirst
-                            ? token.colorText
-                            : token.colorTextTertiary,
-                        }}
-                      >
-                        {address.text}
-                      </Typography.Text>
-                    </Space>
-                  );
-                })}
-              </Space>
-            ),
-          },
-          {
-            title: t("users.fields.isActive.label"),
-            // @ts-expect-error Ant Design Icon's v5.0.1 has an issue with @types/react@^18.2.66
-            icon: <UserOutlined />,
-            value: <UserStatus value={!!customer?.isActive} />,
-          },
-          {
-            title: t("users.fields.createdAt"),
+            title: "Date registered",
             // @ts-expect-error Ant Design Icon's v5.0.1 has an issue with @types/react@^18.2.66
             icon: <CalendarOutlined />,
             value: (
               <Typography.Text>
-                {dayjs(customer?.createdAt).format("MMMM, YYYY HH:mm A")}
+                {dayjs(subject?.created_at).format("MMMM, YYYY HH:mm A")}
               </Typography.Text>
             ),
           },
@@ -103,17 +67,49 @@ export const CustomerInfoList = ({ customer }: Props) => {
             <List.Item>
               <List.Item.Meta
                 avatar={item.icon}
-                title={
-                  <Typography.Text type="secondary">
-                    {item.title}
-                  </Typography.Text>
-                }
-                description={item.value}
-              />
+                title={<Typography.Text type="secondary">
+                  {item.title}
+                </Typography.Text>}
+                description={item.value} />
             </List.Item>
           );
-        }}
-      />
+        } } />
     </Card>
+    <List>
+    <Table
+        {...tableProps}
+        rowKey="id"
+        scroll={{ x: true }}
+        locale={{
+          emptyText: <CustomEmpty />
+        }}
+      >
+        <Table.Column
+          key="createdAt"
+          dataIndex="created_at"
+          title="ID"
+          render={(value) => <DateField value={value} format="LLL" />}
+        />
+        <Table.Column
+          key="createdAt"
+          dataIndex="created_at"
+          title="Disease"
+          render={(value) => <DateField value={value} format="LLL" />}
+        />
+        <Table.Column
+          key="createdAt"
+          dataIndex="created_at"
+          title="Status"
+          render={(value) => <DateField value={value} format="LLL" />}
+        />
+        <Table.Column
+          key="createdAt"
+          dataIndex="created_at"
+          title="Test center"
+          render={(value) => <DateField value={value} format="LLL" />}
+        />
+        
+      </Table>
+    </List></>
   );
 };

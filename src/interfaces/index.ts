@@ -173,3 +173,45 @@ export interface ITrendingProducts {
   product: IProduct;
   orderCount: number;
 }
+
+// my stuff starts here
+export interface ICategory {
+  id: number;
+  title: string;
+}
+export interface IPost {
+  id: number;
+  title: string;
+  content: string;
+  status: "published" | "draft" | "rejected";
+  category: { id: number };
+}
+
+export interface ResponseTest{
+  test_id: string,
+  subject: string,
+  disease: string,
+  result: string,
+  test_center: string
+  test_date: string
+}
+
+export interface ResponseSubject{
+  id: string,
+  name: string,
+  email: string,
+  created_at: string
+}
+
+export interface ResponseOverview{
+  num_subjects: number,
+  num_tests: number,
+  num_diseases: number,
+  num_users: number
+}
+
+export const enum Resource {
+  Subject = "subjects",
+  Test = "tests",
+}
+

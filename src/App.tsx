@@ -20,52 +20,38 @@ import {
   UserOutlined,
   UnorderedListOutlined,
   TagsOutlined,
+  FireOutlined,
 } from "@ant-design/icons";
-import jsonServerDataProvider from "@refinedev/simple-rest";
-import { authProvider } from "./authProvider";
+import { authProvider, dataProvider } from "./providers";
 
 import "dayjs/locale/de";
 
 import { DashboardPage } from "./pages/dashboard";
-import { OrderList, OrderShow } from "./pages/orders";
+import { TestList, TestShow } from "./pages/tests";
 import { AuthPage } from "./pages/auth";
-import { CustomerShow, CustomerList } from "./pages/customers";
-import { CourierList, CourierCreate, CourierEdit } from "./pages/couriers";
+import { SubjectShow, SubjectList } from "./pages/subjects";
 import {
   ProductList,
   ProductCreate,
   ProductEdit,
   ProductShow,
 } from "./pages/products";
-import { StoreCreate, StoreEdit, StoreList } from "./pages/stores";
-import { CategoryList } from "./pages/categories";
 import { useTranslation } from "react-i18next";
 import { Header, Title } from "./components";
 import { BikeWhiteIcon } from "./components/icons";
 import { ConfigProvider } from "./context";
-import { useAutoLoginForDemo } from "./hooks";
 
 import "@refinedev/antd/dist/reset.css";
 
 const App: React.FC = () => {
-  // This hook is used to automatically login the user.
-  // We use this hook to skip the login page and demonstrate the application more quickly.
-  const { loading } = useAutoLoginForDemo();
 
-  const API_URL = "https://api.finefoods.refine.dev";
-  const dataProvider = jsonServerDataProvider(API_URL);
+  // const { t, i18n } = useTranslation();
 
-  const { t, i18n } = useTranslation();
-
-  const i18nProvider = {
-    translate: (key: string, params: object) => t(key, params),
-    changeLocale: (lang: string) => i18n.changeLanguage(lang),
-    getLocale: () => i18n.language,
-  };
-
-  if (loading) {
-    return null;
-  }
+  // const i18nProvider = {
+  //   translate: (key: string, params: object) => t(key, params),
+  //   changeLocale: (lang: string) => i18n.changeLanguage(lang),
+  //   getLocale: () => i18n.language,
+  // };
 
   return (
     <BrowserRouter>
@@ -75,7 +61,7 @@ const App: React.FC = () => {
             routerProvider={routerProvider}
             dataProvider={dataProvider}
             authProvider={authProvider}
-            i18nProvider={i18nProvider}
+            // i18nProvider={i18nProvider}
             options={{
               syncWithLocation: true,
               warnWhenUnsavedChanges: true,
@@ -83,70 +69,41 @@ const App: React.FC = () => {
             notificationProvider={useNotificationProvider}
             resources={[
               {
-                name: "dashboard",
+                name: "overview",
                 list: "/",
                 meta: {
-                  label: "Dashboard",
+                  label: "Overview",
                   // @ts-expect-error Ant Design Icon's v5.0.1 has an issue with @types/react@^18.2.66
                   icon: <DashboardOutlined />,
                 },
               },
               {
-                name: "orders",
-                list: "/orders",
-                show: "/orders/:id",
+                name: "tests",
+                list: "/tests",
+                show: "/tests/:id",
                 meta: {
                   // @ts-expect-error Ant Design Icon's v5.0.1 has an issue with @types/react@^18.2.66
                   icon: <ShoppingOutlined />,
                 },
               },
               {
-                name: "users",
-                list: "/customers",
-                show: "/customers/:id",
+                name: "subjects",
+                list: "/subjects",
+                show: "/subjects/:id",
                 meta: {
                   // @ts-expect-error Ant Design Icon's v5.0.1 has an issue with @types/react@^18.2.66
                   icon: <UserOutlined />,
                 },
               },
               {
-                name: "products",
-                list: "/products",
-                create: "/products/new",
-                edit: "/products/:id/edit",
-                show: "/products/:id",
+                name: "hotspots",
+                list: "/hotspots",
+                create: "/hotspots/new",
+                edit: "/hotspots/:id/edit",
+                show: "/hotspots/:id",
                 meta: {
                   // @ts-expect-error Ant Design Icon's v5.0.1 has an issue with @types/react@^18.2.66
-                  icon: <UnorderedListOutlined />,
-                },
-              },
-              {
-                name: "categories",
-                list: "/categories",
-                meta: {
-                  // @ts-expect-error Ant Design Icon's v5.0.1 has an issue with @types/react@^18.2.66
-                  icon: <TagsOutlined />,
-                },
-              },
-              {
-                name: "stores",
-                list: "/stores",
-                create: "/stores/new",
-                edit: "/stores/:id/edit",
-                meta: {
-                  // @ts-expect-error Ant Design Icon's v5.0.1 has an issue with @types/react@^18.2.66
-                  icon: <ShopOutlined />,
-                },
-              },
-              {
-                name: "couriers",
-                list: "/couriers",
-                create: "/couriers/new",
-                edit: "/couriers/:id/edit",
-                show: "/couriers/:id",
-                meta: {
-                  // @ts-expect-error Ant Design Icon's v5.0.1 has an issue with @types/react@^18.2.66
-                  icon: <BikeWhiteIcon />,
+                  icon: <FireOutlined />,
                 },
               },
             ]}
@@ -174,63 +131,27 @@ const App: React.FC = () => {
               >
                 <Route index element={<DashboardPage />} />
 
-                <Route path="/orders">
-                  <Route index element={<OrderList />} />
-                  <Route path=":id" element={<OrderShow />} />
+                <Route path="/tests">
+                  <Route index element={<TestList />} />
+                  <Route path=":id" element={<TestShow />} />
                 </Route>
 
                 <Route
-                  path="/customers"
+                  path="/subjects"
                   element={
-                    <CustomerList>
+                    <SubjectList>
                       <Outlet />
-                    </CustomerList>
+                    </SubjectList>
                   }
                 >
-                  <Route path=":id" element={<CustomerShow />} />
-                </Route>
-
-                <Route
-                  path="/products"
-                  element={
-                    <ProductList>
-                      <Outlet />
-                    </ProductList>
-                  }
-                >
-                  <Route path="new" element={<ProductCreate />} />
-                  <Route path=":id" element={<ProductShow />} />
-                  <Route path=":id/edit" element={<ProductEdit />} />
-                </Route>
-
-                <Route path="/stores">
-                  <Route index element={<StoreList />} />
-                  <Route path="new" element={<StoreCreate />} />
-                  <Route path=":id/edit" element={<StoreEdit />} />
-                </Route>
-
-                <Route path="/categories" element={<CategoryList />} />
-
-                <Route path="/couriers">
-                  <Route
-                    path=""
-                    element={
-                      <CourierList>
-                        <Outlet />
-                      </CourierList>
-                    }
-                  >
-                    <Route path="new" element={<CourierCreate />} />
-                  </Route>
-
-                  <Route path=":id/edit" element={<CourierEdit />} />
+                  <Route path=":id" element={<SubjectShow />} />
                 </Route>
               </Route>
 
               <Route
                 element={
                   <Authenticated key="auth-pages" fallback={<Outlet />}>
-                    <NavigateToResource resource="dashboard" />
+                    <NavigateToResource resource="overview" />
                   </Authenticated>
                 }
               >
@@ -239,38 +160,34 @@ const App: React.FC = () => {
                   element={
                     <AuthPage
                       type="login"
+                      registerLink={false}
+                      forgotPasswordLink={false}
+                      rememberMe={true}
                       formProps={{
-                        initialValues: {
-                          email: "demo@refine.dev",
-                          password: "demodemo",
-                        },
+                          initialValues: {
+                            remember: false
+                          }
                       }}
                     />
                   }
                 />
-                <Route
+                {/* <Route
                   path="/register"
                   element={
                     <AuthPage
                       type="register"
-                      formProps={{
-                        initialValues: {
-                          email: "demo@refine.dev",
-                          password: "demodemo",
-                        },
-                      }}
                     />
                   }
-                />
-                <Route
+                /> */}
+                {/* <Route
                   path="/forgot-password"
                   element={<AuthPage type="forgotPassword" />}
                 />
                 <Route
                   path="/update-password"
                   element={<AuthPage type="updatePassword" />}
-                />
-              </Route>
+                />*/}
+              </Route> 
 
               <Route
                 element={

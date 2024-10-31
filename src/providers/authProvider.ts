@@ -1,18 +1,45 @@
-import type { AuthProvider } from "@refinedev/core";
+import type { AuthProvider, AuthActionResponse } from "@refinedev/core";
 import { notification } from "antd";
-import { disableAutoLogin, enableAutoLogin } from "./hooks";
 
-export const TOKEN_KEY = "refine-auth";
+export const TOKEN_KEY = "THEA_TOKEN";
+export const USER_DETAILS_KEY = "THEA_USER";
+const API_URL = "http://localhost:8000";
 
 export const authProvider: AuthProvider = {
   login: async ({ email, password }) => {
-    enableAutoLogin();
-    localStorage.setItem(TOKEN_KEY, `${email}-${password}`);
+    const response = await fetch(`${API_URL}/login/`, {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (response.status < 200 || response.status > 299) {
+      return {
+        success: false,
+        redirectTo: "/login",
+        error: {
+          message: "Login failed",
+          name: "Please check your credentials and try again!",
+        },
+      };
+    }
+
+    const data = await response.json();
+
+    localStorage.setItem(TOKEN_KEY, data.access);
+    localStorage.setItem(USER_DETAILS_KEY, JSON.stringify(data.user));
+
     return {
       success: true,
-      redirectTo: "/",
+      redirectTo: '/',
+      successNotification: {
+        message: "Login was successful!",
+      }
     };
   },
+
   register: async ({ email, password }) => {
     try {
       await authProvider.login({ email, password });
@@ -29,6 +56,7 @@ export const authProvider: AuthProvider = {
       };
     }
   },
+
   updatePassword: async () => {
     notification.success({
       message: "Updated Password",
@@ -38,6 +66,7 @@ export const authProvider: AuthProvider = {
       success: true,
     };
   },
+
   forgotPassword: async ({ email }) => {
     notification.success({
       message: "Reset Password",
@@ -47,14 +76,17 @@ export const authProvider: AuthProvider = {
       success: true,
     };
   },
+
   logout: async () => {
-    disableAutoLogin();
     localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(USER_DETAILS_KEY);
+
     return {
       success: true,
       redirectTo: "/login",
     };
   },
+
   onError: async (error) => {
     if (error.response?.status === 401) {
       return {
@@ -64,9 +96,12 @@ export const authProvider: AuthProvider = {
 
     return { error };
   },
+
   check: async () => {
+    const user = localStorage.getItem(USER_DETAILS_KEY);
     const token = localStorage.getItem(TOKEN_KEY);
-    if (token) {
+
+    if (user && token) {
       return {
         authenticated: true,
       };
@@ -74,25 +109,27 @@ export const authProvider: AuthProvider = {
 
     return {
       authenticated: false,
-      error: {
-        message: "Check failed",
-        name: "Token not found",
-      },
-      logout: true,
       redirectTo: "/login",
+      logout: true,
     };
   },
+
   getPermissions: async () => null,
   getIdentity: async () => {
-    const token = localStorage.getItem(TOKEN_KEY);
-    if (!token) {
+    const access_token = localStorage.getItem(TOKEN_KEY);
+    const user = localStorage.getItem(USER_DETAILS_KEY);
+
+    if (!access_token || !user) {
       return null;
     }
 
+    const {id, email, access, name} = JSON.parse(user);
+
     return {
-      id: 1,
-      name: "James Sullivan",
-      avatar: "https://i.pravatar.cc/150",
+      access_token: access,
+      id,
+      name,
+      email
     };
   },
 };
