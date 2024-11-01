@@ -19,11 +19,6 @@ import {
 import { SearchOutlined } from "@ant-design/icons";
 import { Table, Input, Select, Typography, theme, InputNumber, Button } from "antd";
 
-import {
-  OrderStatus,
-  PaginationTotal,
-  OrderTableColumnProducts,
-} from "../../components";
 import {ResponseTest} from "../../interfaces";
 
 export const TestList = () => {

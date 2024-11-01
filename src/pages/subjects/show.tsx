@@ -32,7 +32,7 @@ export const SubjectShow = () => {
         }}
       >
         <SubjectInfoSummary subject={user} />
-        <SubjectInfoList subject={user} />
+        <SubjectInfoList subject={user} tests={user?.tests} />
       </Flex>
     </Drawer>
   );

@@ -196,11 +196,25 @@ export interface ResponseTest{
   test_date: string
 }
 
+export interface ResponseSubjectTest{
+  test_id: string,
+  disease: string,
+  result: string,
+  test_center: string,
+  test_date: string,
+}
+
 export interface ResponseSubject{
   id: string,
   name: string,
   email: string,
-  created_at: string
+  created_at: string,
+  tests: ResponseSubjectTest[]
+}
+
+export interface ResponseSubjectFilterVariables{
+  id: string,
+  name: string,
 }
 
 export interface ResponseOverview{

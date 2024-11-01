@@ -3,7 +3,8 @@ import type { DataProvider } from "@refinedev/core";
 // change this for both prod and dev. find a robust way to do this!
 const API_URL = "http://localhost:8000";
 
-const DUMMY_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1Nzc0NzYwLCJpYXQiOjE3MzAyMjI3NjAsImp0aSI6ImRmOTU5YzkxMWY3MTRkODNhMDc3ODQxMzhkMDYwYWVkIiwidXNlcl9pZCI6ImQyMWRmNzczLThhMzAtNGExOS04N2ZhLTVlNDQzMzE1MjBkNCJ9.eOE7GBQZFZX_YEOP1mQoPb3f2MuSKD5_Oc0JzbRi6FU"
+const DUMMY_TOKEN =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1Nzc0NzYwLCJpYXQiOjE3MzAyMjI3NjAsImp0aSI6ImRmOTU5YzkxMWY3MTRkODNhMDc3ODQxMzhkMDYwYWVkIiwidXNlcl9pZCI6ImQyMWRmNzczLThhMzAtNGExOS04N2ZhLTVlNDQzMzE1MjBkNCJ9.eOE7GBQZFZX_YEOP1mQoPb3f2MuSKD5_Oc0JzbRi6FU";
 
 export const dataProvider: DataProvider = {
   getOne: async ({resource, id}) => {
@@ -14,10 +15,10 @@ export const dataProvider: DataProvider = {
     }
 
     const response = await fetch(`${API_URL}/api/${resource}/${id}`, {
-        headers: {
-            // "Authorization": `Bearer ${DUMMY_TOKEN}`,
-            'Content-Type': 'application/json',
-        }
+      headers: {
+        // "Authorization": `Bearer ${DUMMY_TOKEN}`,
+        "Content-Type": "application/json",
+      },
     });
 
     const data = await response.json();
@@ -26,57 +27,89 @@ export const dataProvider: DataProvider = {
 
     return { data, total: data.length };
   },
+
   update: () => {
     throw new Error("Not implemented");
   },
 
-  getList: async ({resource, pagination, filters, sorters, meta}) => {
-    if(resource === "couriers" || resource === "stores" || resource === "orders") {
+  getList: async ({ resource, pagination, filters, sorters, meta }) => {
+    if (resource === "couriers" || resource === "stores" || resource === "orders") {
       // ..... same as here
       return { data: {}, total: 0 };
     }
-    const response = await fetch(`${API_URL}/api/${resource}/`, {
-        headers: {
-            // "Authorization": `Bearer ${DUMMY_TOKEN}`,
-            'Content-Type': 'application/json',
-        }
-    });
 
-    const data = await response.json();
+    const params = new URLSearchParams();
+    if (pagination) {
+      params.append("_start", (pagination.current - 1) * pagination.pageSize);
+      params.append("_end", pagination.current * pagination.pageSize);
+    }
+
+    // if (sorters && sorters.length > 0) {
+    //   params.append("_sort", sorters.map((sorter) => sorter.field).join(","));
+    //   params.append("_order", sorters.map((sorter) => sorter.order).join(","));
+    // }
+
+    if (filters && filters.length > 0) {
+      filters.forEach((filter) => {
+        // console.log("filter: ", filter);
+        if ("field" in filter && filter.operator === "eq") {
+          params.append(filter.field, filter.value);
+        }
+      });
+    }
+
+    const response = await fetch(
+      `${API_URL}/api/${resource}?${params.toString()}/`,
+      {
+        headers: {
+          // "Authorization": `Bearer ${DUMMY_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const {total, data} = await response.json();
     // console.log("response: ", JSON.stringify(data, null, 2));
 
     if (response.status < 200 || response.status > 299) throw response;
 
-    return { data, total: data.length };
+    return { data, total };
   },
 
   create: () => {
     throw new Error("Not implemented");
   },
-  deleteOne: () => {
-    throw new Error("Not implemented");
+
+  deleteOne: async ({ resource, id }) => {
+    const response = await fetch(`${API_URL}/api/${resource}/${id}/`, {
+      method: "DELETE",
+      headers: {
+        // "Authorization": `Bearer ${DUMMY_TOKEN}`,
+      },
+    });
+    
+    if (response.status < 200 || response.status > 299) throw response;
+    
+    return { data: id, total: 1 };
   },
+
+
   getApiUrl: () => API_URL,
-  // Optional methods:
 
   getMany: () => {
     throw new Error("Not implemented");
   },
 
-  // createMany: () => { /* ... */ },
-  // deleteMany: () => { /* ... */ },
-  // updateMany: () => { /* ... */ },
-  custom: async ({url, method, }) => {
+  custom: async ({ url, method }) => {
     const response = await fetch(url, {
-        method,
-        headers: {
-            // "Authorization": `Bearer ${DUMMY_TOKEN}`,
-            'Content-Type': 'application/json',
-        }
+      method,
+      headers: {
+        // "Authorization": `Bearer ${DUMMY_TOKEN}`,
+        "Content-Type": "application/json",
+      },
     });
 
     const data = await response.json();
-    // console.log("response: ", JSON.stringify(data, null, 2));
 
     if (response.status < 200 || response.status > 299) throw response;
 

@@ -57,26 +57,6 @@ export const authProvider: AuthProvider = {
     }
   },
 
-  updatePassword: async () => {
-    notification.success({
-      message: "Updated Password",
-      description: "Password updated successfully",
-    });
-    return {
-      success: true,
-    };
-  },
-
-  forgotPassword: async ({ email }) => {
-    notification.success({
-      message: "Reset Password",
-      description: `Reset password link sent to "${email}"`,
-    });
-    return {
-      success: true,
-    };
-  },
-
   logout: async () => {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_DETAILS_KEY);
@@ -115,6 +95,7 @@ export const authProvider: AuthProvider = {
   },
 
   getPermissions: async () => null,
+  
   getIdentity: async () => {
     const access_token = localStorage.getItem(TOKEN_KEY);
     const user = localStorage.getItem(USER_DETAILS_KEY);
