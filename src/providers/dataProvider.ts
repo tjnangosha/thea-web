@@ -1,10 +1,9 @@
 import type { DataProvider } from "@refinedev/core";
+import { TOKEN_KEY, API_URL } from "./authProvider";
 
-// change this for both prod and dev. find a robust way to do this!
-const API_URL = "http://localhost:8000";
-
-const DUMMY_TOKEN =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1Nzc0NzYwLCJpYXQiOjE3MzAyMjI3NjAsImp0aSI6ImRmOTU5YzkxMWY3MTRkODNhMDc3ODQxMzhkMDYwYWVkIiwidXNlcl9pZCI6ImQyMWRmNzczLThhMzAtNGExOS04N2ZhLTVlNDQzMzE1MjBkNCJ9.eOE7GBQZFZX_YEOP1mQoPb3f2MuSKD5_Oc0JzbRi6FU";
+export const getAccessToken = () => {
+  return localStorage.getItem(TOKEN_KEY)
+}
 
 export const dataProvider: DataProvider = {
   getOne: async ({resource, id}) => {
@@ -16,7 +15,7 @@ export const dataProvider: DataProvider = {
 
     const response = await fetch(`${API_URL}/api/${resource}/${id}`, {
       headers: {
-        // "Authorization": `Bearer ${DUMMY_TOKEN}`,
+        "Authorization": `Bearer ${getAccessToken()}`,
         "Content-Type": "application/json",
       },
     });
@@ -51,7 +50,6 @@ export const dataProvider: DataProvider = {
 
     if (filters && filters.length > 0) {
       filters.forEach((filter) => {
-        // console.log("filter: ", filter);
         if ("field" in filter && filter.operator === "eq") {
           params.append(filter.field, filter.value);
         }
@@ -62,14 +60,13 @@ export const dataProvider: DataProvider = {
       `${API_URL}/api/${resource}?${params.toString()}/`,
       {
         headers: {
-          // "Authorization": `Bearer ${DUMMY_TOKEN}`,
+          "Authorization": `Bearer ${getAccessToken()}`,
           "Content-Type": "application/json",
         },
       }
     );
 
     const {total, data} = await response.json();
-    // console.log("response: ", JSON.stringify(data, null, 2));
 
     if (response.status < 200 || response.status > 299) throw response;
 
@@ -84,7 +81,7 @@ export const dataProvider: DataProvider = {
     const response = await fetch(`${API_URL}/api/${resource}/${id}/`, {
       method: "DELETE",
       headers: {
-        // "Authorization": `Bearer ${DUMMY_TOKEN}`,
+        "Authorization": `Bearer ${getAccessToken()}`,
       },
     });
     
@@ -104,7 +101,7 @@ export const dataProvider: DataProvider = {
     const response = await fetch(url, {
       method,
       headers: {
-        // "Authorization": `Bearer ${DUMMY_TOKEN}`,
+        "Authorization": `Bearer ${getAccessToken()}`,
         "Content-Type": "application/json",
       },
     });

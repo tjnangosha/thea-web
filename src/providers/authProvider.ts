@@ -3,11 +3,13 @@ import { notification } from "antd";
 
 export const TOKEN_KEY = "THEA_TOKEN";
 export const USER_DETAILS_KEY = "THEA_USER";
-const API_URL = "http://localhost:8000";
+
+// TODO; change this for both prod and dev. find a robust way to do this!
+export const API_URL = "http://localhost:8000";
 
 export const authProvider: AuthProvider = {
   login: async ({ email, password }) => {
-    const response = await fetch(`${API_URL}/login/`, {
+    const response = await fetch(`${API_URL}/login/user/`, {
       method: "POST",
       body: JSON.stringify({ email, password }),
       headers: {
@@ -60,6 +62,8 @@ export const authProvider: AuthProvider = {
   logout: async () => {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_DETAILS_KEY);
+
+    // add a call so that these tokens can be revoked on the server
 
     return {
       success: true,

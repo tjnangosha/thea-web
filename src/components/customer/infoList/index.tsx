@@ -86,7 +86,7 @@ export const SubjectInfoList = ({ subject, tests }: Props) => {
         >
           <Table.Column dataIndex="test_id" title="ID" />
           <Table.Column dataIndex="disease" title="Disease" />
-          <Table.Column dataIndex="result" title="Result" />
+          <Table.Column dataIndex="test_result" title="Result" />
           <Table.Column dataIndex="test_center" title="Test center" />
           <Table.Column dataIndex="test_date" title="Test date" />
         </Table>
