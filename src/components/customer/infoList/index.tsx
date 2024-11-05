@@ -1,5 +1,5 @@
 import React from "react";
-import type { IUser, ResponseSubject, ResponseSubjectTest } from "../../../interfaces";
+import type { ResponseSubject, ResponseSubjectTest } from "../../../interfaces";
 import {
   PhoneOutlined,
   EnvironmentOutlined,
