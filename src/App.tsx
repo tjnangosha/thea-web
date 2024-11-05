@@ -27,18 +27,12 @@ import { authProvider, dataProvider } from "./providers";
 import "dayjs/locale/de";
 
 import { DashboardPage } from "./pages/dashboard";
+import { HotspotsPage } from "./pages/hotspots";
 import { TestList, TestShow } from "./pages/tests";
 import { AuthPage } from "./pages/auth";
 import { SubjectShow, SubjectList } from "./pages/subjects";
-import {
-  ProductList,
-  ProductCreate,
-  ProductEdit,
-  ProductShow,
-} from "./pages/products";
 import { useTranslation } from "react-i18next";
 import { Header, Title } from "./components";
-import { BikeWhiteIcon } from "./components/icons";
 import { ConfigProvider } from "./context";
 
 import "@refinedev/antd/dist/reset.css";
@@ -98,9 +92,6 @@ const App: React.FC = () => {
               {
                 name: "hotspots",
                 list: "/hotspots",
-                create: "/hotspots/new",
-                edit: "/hotspots/:id/edit",
-                show: "/hotspots/:id",
                 meta: {
                   // @ts-expect-error Ant Design Icon's v5.0.1 has an issue with @types/react@^18.2.66
                   icon: <FireOutlined />,
@@ -111,24 +102,14 @@ const App: React.FC = () => {
             <Routes>
               <Route
                 element={
-                  <Authenticated
-                    key="authenticated-routes"
-                    fallback={<CatchAllNavigate to="/login" />}
-                  >
+                  <Authenticated key="authenticated-routes" fallback={<CatchAllNavigate to="/login" />} >
                     <ThemedLayoutV2 Header={Header} Title={Title}>
-                      <div
-                        style={{
-                          maxWidth: "1200px",
-                          marginLeft: "auto",
-                          marginRight: "auto",
-                        }}
-                      >
+                      <div style={{maxWidth: "1200px", marginLeft: "auto", marginRight: "auto", }} >
                         <Outlet />
                       </div>
                     </ThemedLayoutV2>
                   </Authenticated>
-                }
-              >
+              }>
                 <Route index element={<DashboardPage />} />
 
                 <Route path="/tests">
@@ -136,16 +117,23 @@ const App: React.FC = () => {
                   <Route path=":id" element={<TestShow />} />
                 </Route>
 
-                <Route
-                  path="/subjects"
+                <Route path="/subjects"
                   element={
                     <SubjectList>
                       <Outlet />
                     </SubjectList>
-                  }
-                >
+                }>
                   <Route path=":id" element={<SubjectShow />} />
                 </Route>
+
+                <Route path="/hotspots"
+                  element={
+                    <HotspotsPage>
+                      {/* <Outlet /> */}
+                    </HotspotsPage>
+                }>
+                </Route>
+
               </Route>
 
               <Route
@@ -196,14 +184,16 @@ const App: React.FC = () => {
                       <Outlet />
                     </ThemedLayoutV2>
                   </Authenticated>
-                }
-              >
+              }>
                 <Route path="*" element={<ErrorComponent />} />
               </Route>
+
             </Routes>
+
             <UnsavedChangesNotifier />
             <DocumentTitleHandler />
             <RefineKbar />
+
           </Refine>
         </RefineKbarProvider>
       </ConfigProvider>

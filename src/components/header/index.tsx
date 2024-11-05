@@ -30,7 +30,6 @@ import debounce from "lodash/debounce";
 
 import { useConfigProvider } from "../../context";
 import { IconMoon, IconSun } from "../../components/icons";
-import type { IOrder, IStore, ICourier, IIdentity } from "../../interfaces";
 import { useStyles } from "./styled";
 
 const { Header: AntdHeader } = AntdLayout;
@@ -238,14 +237,15 @@ export const Header: React.FC = () => {
               </Button>
             </Dropdown> */}
 
-            <Button
+            {/* TODO; disable this at the moment while we get better theme colors */}
+            {/* <Button
               className={styles.themeSwitch}
               type="text"
               icon={mode === "light" ? <IconMoon /> : <IconSun />}
               onClick={() => {
                 setMode(mode === "light" ? "dark" : "light");
               }}
-            />
+            /> */}
 
             <Space size={screens.md ? 16 : 8} align="center">
               <Text ellipsis className={styles.userName}>
