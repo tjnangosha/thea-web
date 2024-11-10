@@ -1,11 +1,6 @@
-import type { IOrder } from "../../../interfaces";
 import { Map, MapMarker } from "../../map";
 
-type Props = {
-  order?: IOrder;
-};
-
-export const OrderDeliveryMap = ({ order }: Props) => {
+export const OrderDeliveryMap = ({ order }: any) => {
   return (
     <Map
       mapProps={{

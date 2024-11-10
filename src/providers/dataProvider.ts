@@ -39,7 +39,9 @@ export const dataProvider: DataProvider = {
 
     const params = new URLSearchParams();
     if (pagination) {
+      // @ts-ignore
       params.append("_start", (pagination.current - 1) * pagination.pageSize);
+      // @ts-ignore
       params.append("_end", pagination.current * pagination.pageSize);
     }
 
@@ -77,6 +79,7 @@ export const dataProvider: DataProvider = {
     throw new Error("Not implemented");
   },
 
+  // @ts-ignore
   deleteOne: async ({ resource, id }) => {
     const response = await fetch(`${API_URL}/api/${resource}/${id}/`, {
       method: "DELETE",

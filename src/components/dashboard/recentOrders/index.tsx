@@ -4,7 +4,6 @@ import { Typography, Table, theme, Space, Flex } from "antd";
 
 import {  } from "../../../components";
 
-import type { IOrder } from "../../../interfaces";
 import { useStyles } from "./styled";
 import { getUniqueListWithCount } from "../../../utils";
 
@@ -12,7 +11,7 @@ export const RecentOrders: React.FC = () => {
   const { token } = theme.useToken();
   const { styles } = useStyles();
 
-  const { tableProps } = useTable<IOrder>({
+  const { tableProps } = useTable({
     resource: "orders",
     initialSorter: [
       {
@@ -45,7 +44,7 @@ export const RecentOrders: React.FC = () => {
       showHeader={false}
       rowKey="id"
     >
-      <Table.Column<IOrder>
+      <Table.Column
         dataIndex="orderNumber"
         className={styles.column}
         render={(_, record) => (
@@ -61,7 +60,7 @@ export const RecentOrders: React.FC = () => {
           </Typography.Link>
         )}
       />
-      <Table.Column<IOrder>
+      <Table.Column
         dataIndex="id"
         className={styles.column}
         render={(_, record) => {
@@ -93,17 +92,15 @@ export const RecentOrders: React.FC = () => {
           );
         }}
       />
-      <Table.Column<IOrder>
+      <Table.Column
         dataIndex="products"
         className={styles.column}
-        render={(products: IOrder["products"]) => {
+        render={(products: any["products"]) => {
           if (!products.length) {
             return <Typography.Text>-</Typography.Text>;
           }
 
-          const uniqueProducts = getUniqueListWithCount<
-            IOrder["products"][number]
-          >({ list: products, field: "id" });
+          const uniqueProducts = getUniqueListWithCount({ list: products, field: "id" });
 
           return (
             <Space
@@ -129,7 +126,7 @@ export const RecentOrders: React.FC = () => {
           );
         }}
       />
-      <Table.Column<IOrder>
+      <Table.Column
         dataIndex="amount"
         className={styles.column}
         align="end"
@@ -148,11 +145,12 @@ export const RecentOrders: React.FC = () => {
           );
         }}
       />
-      <Table.Column<IOrder>
+      <Table.Column
         fixed="right"
         key="actions"
         className={styles.column}
         align="end"
+        // @ts-ignore
         render={(_, record) => <ResponseTestActions record={record} />}
       />
     </Table>

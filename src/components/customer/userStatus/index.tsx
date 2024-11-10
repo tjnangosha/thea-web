@@ -1,14 +1,9 @@
 import { Tag, Typography, theme } from "antd";
-import type { IUser } from "../../../interfaces";
 import { CheckCircleOutlined, PauseCircleOutlined } from "@ant-design/icons";
 import { useTranslate } from "@refinedev/core";
 import { useConfigProvider } from "../../../context";
 
-type Props = {
-  value: IUser["isActive"];
-};
-
-export const UserStatus = ({ value }: Props) => {
+export const UserStatus = ({ value }: any) => {
   const t = useTranslate();
   const { token } = theme.useToken();
   const { mode } = useConfigProvider();

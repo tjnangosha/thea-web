@@ -1,15 +1,10 @@
 import { Flex, Popover, Typography, Badge, Avatar, theme } from "antd";
 import { getUniqueListWithCount } from "../../../utils";
-import type { IOrder } from "../../../interfaces";
 import { useTranslate } from "@refinedev/core";
 
 const visibleProductCount = 4;
 
-type Props = {
-  order: IOrder;
-};
-
-export const OrderTableColumnProducts = ({ order }: Props) => {
+export const OrderTableColumnProducts = ({ order }: any) => {
   const t = useTranslate();
   const { token } = theme.useToken();
 

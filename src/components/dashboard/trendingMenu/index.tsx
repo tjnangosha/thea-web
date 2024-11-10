@@ -1,6 +1,5 @@
 import { NumberField, useSimpleList } from "@refinedev/antd";
 import { Typography, Avatar, List as AntdList, Flex } from "antd";
-import type { ITrendingProducts } from "../../../interfaces";
 import {
   Rank1Icon,
   Rank2Icon,
@@ -11,7 +10,7 @@ import {
 import type { ReactNode } from "react";
 
 export const TrendingMenu: React.FC = () => {
-  const { listProps } = useSimpleList<ITrendingProducts>({
+  const { listProps } = useSimpleList({
     resource: "trendingProducts",
     pagination: { pageSize: 5, current: 1 },
     syncWithLocation: false,

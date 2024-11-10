@@ -1,18 +1,13 @@
 import { NumberField, useTable } from "@refinedev/antd";
-import type { IUser, IOrder, IOrderFilterVariables } from "../../../interfaces";
 import { type HttpError, useNavigation, useTranslate } from "@refinedev/core";
 import { Table, Typography } from "antd";
 import { OrderStatus, OrderTableColumnProducts } from "../../order";
 
-type Props = {
-  customer?: IUser;
-};
-
-export const CustomerOrderHistory = ({ customer }: Props) => {
+export const CustomerOrderHistory = ({ customer }: any) => {
   const t = useTranslate();
   const { show } = useNavigation();
 
-  const { tableProps } = useTable<IOrder, HttpError, IOrderFilterVariables>({
+  const { tableProps } = useTable({
     resource: "orders",
     initialSorter: [
       {
@@ -41,6 +36,7 @@ export const CustomerOrderHistory = ({ customer }: Props) => {
       onRow={(record) => {
         return {
           onClick: () => {
+            // @ts-ignore
             show("orders", record.id);
           },
         };
@@ -72,7 +68,7 @@ export const CustomerOrderHistory = ({ customer }: Props) => {
           return <OrderStatus status={status.text} />;
         }}
       />
-      <Table.Column<IOrder>
+      <Table.Column
         key="products"
         dataIndex="products"
         title={t("orders.fields.products")}
@@ -80,7 +76,7 @@ export const CustomerOrderHistory = ({ customer }: Props) => {
           return <OrderTableColumnProducts order={record} />;
         }}
       />
-      <Table.Column<IOrder>
+      <Table.Column
         dataIndex="amount"
         align="end"
         title={t("orders.fields.amount")}

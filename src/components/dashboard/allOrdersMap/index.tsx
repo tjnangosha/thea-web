@@ -1,10 +1,9 @@
 import { useList, useNavigation } from "@refinedev/core";
 
 import { Map, MapMarker } from "../..";
-import type { IOrder } from "../../../interfaces";
 
 export const AllOrdersMap: React.FC = () => {
-  const { data: orderData } = useList<IOrder>({
+  const { data: orderData } = useList({
     resource: "orders",
     config: {
       filters: [
@@ -36,6 +35,7 @@ export const AllOrdersMap: React.FC = () => {
         return (
           <MapMarker
             key={order.id}
+            // @ts-ignore
             onClick={() => show("orders", order.id)}
             icon={{
               url: "/images/marker-courier.svg",
@@ -51,6 +51,7 @@ export const AllOrdersMap: React.FC = () => {
         return (
           <MapMarker
             key={order.id}
+            // @ts-ignore
             onClick={() => show("orders", order.id)}
             icon={{
               url: "/images/marker-customer.svg",

@@ -70,6 +70,7 @@ const BarChart = (props: Props) => {
     },
   };
 
+  // @ts-ignore
   return <Bar data={data} options={options} />;
 };
 
@@ -104,7 +105,10 @@ export const DashboardPage: React.FC = () => {
           <CardWithMetrics icon={iconUsers} metric="Users" value={data?.data.num_users} />
         </Col>
       </Row>
-      <BarChart weeklyStats={data?.data.weekly_stats} />
+      {
+        // @ts-ignore
+        <BarChart weeklyStats={data?.data.weekly_stats} />
+      }
     </>
   );
 };

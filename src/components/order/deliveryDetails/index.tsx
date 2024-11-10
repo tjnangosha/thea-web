@@ -1,5 +1,4 @@
 import { Flex, Grid, List, Space, Steps, Typography, theme } from "antd";
-import type { IEvent, IOrder } from "../../../interfaces";
 import { useTranslate } from "@refinedev/core";
 import dayjs from "dayjs";
 import {
@@ -14,11 +13,8 @@ import { useMemo } from "react";
 import { BikeWhiteIcon } from "../../icons";
 import { useConfigProvider } from "../../../context";
 
-type Props = {
-  order: IOrder;
-};
 
-export const OrderDeliveryDetails = ({ order }: Props) => {
+export const OrderDeliveryDetails = ({ order }: any) => {
   const t = useTranslate();
   const { token } = theme.useToken();
   const breakpoints = Grid.useBreakpoint();
@@ -82,7 +78,9 @@ export const OrderDeliveryDetails = ({ order }: Props) => {
           padding: "24px",
         }}
       >
-        {order?.events.map((event, index) => {
+        {
+        // @ts-ignore
+        order?.events.map((event, index) => {
           const status = getStepStatus(order, event, index);
           const isLast = index === order?.events.length - 1;
 
@@ -144,23 +142,23 @@ export const OrderDeliveryDetails = ({ order }: Props) => {
   );
 };
 
-const getCurrentStep = (order: IOrder) => {
-  return order?.events.findIndex((el) => el.status === order?.status?.text);
+const getCurrentStep = (order: any) => {
+  return order?.events.findIndex((el: any) => el.status === order?.status?.text);
 };
 
 const getNotFinishedCurrentStep = (
-  order: IOrder,
-  event: IEvent,
+  order: any,
+  event: any,
   index: number,
 ) => {
   return (
     event.status !== "Cancelled" &&
     event.status !== "Delivered" &&
-    order?.events.findIndex((el) => el.status === order?.status?.text) === index
+    order?.events.findIndex((el: any) => el.status === order?.status?.text) === index
   );
 };
 
-const getStepStatus = (order: IOrder, event: IEvent, index: number) => {
+const getStepStatus = (order: any, event: any, index: number) => {
   if (!event.date) return "wait";
   if (event.status === "Cancelled") return "error";
   if (getNotFinishedCurrentStep(order, event, index)) return "process";

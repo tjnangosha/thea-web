@@ -1,12 +1,11 @@
 import { type UseFormReturnType, getValueFromEvent } from "@refinedev/antd";
 import { Avatar, Flex, Form, Upload } from "antd";
 import { useApiUrl } from "@refinedev/core";
-import type { ICourier } from "../../../interfaces";
 import { useStyles } from "./styled";
 import { CloudUploadOutlined } from "@ant-design/icons";
 
 type Props = {
-  formProps: UseFormReturnType<ICourier>["formProps"];
+  formProps: UseFormReturnType["formProps"];
   showUploadOverlay?: boolean;
   containerStyle?: React.CSSProperties;
   disabled?: boolean;

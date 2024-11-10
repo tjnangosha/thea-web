@@ -4,6 +4,7 @@ import { useConfigProvider } from "../../context";
 import { UserOutlined } from "@ant-design/icons";
 import { NumberField } from "@refinedev/antd";
 
+// @ts-ignore
 export const CardWithMetrics = ({icon, metric, value}) => {
   return (
     <Card style={{ textAlign: 'center', borderRadius: 8, boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', marginBottom: 20 }}>

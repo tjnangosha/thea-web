@@ -1,17 +1,12 @@
 import { useTable } from "@refinedev/antd";
-import type { ICourier, IReview } from "../../../interfaces";
 import { Rate, Table, Tag } from "antd";
 import { useNavigation, useTranslate } from "@refinedev/core";
 
-type Props = {
-  courier?: ICourier;
-};
-
-export const CourierReviewTable = (props: Props) => {
+export const CourierReviewTable = (props: any) => {
   const t = useTranslate();
   const { show } = useNavigation();
 
-  const { tableProps } = useTable<IReview>({
+  const { tableProps } = useTable({
     resource: "reviews",
     filters: {
       permanent: [

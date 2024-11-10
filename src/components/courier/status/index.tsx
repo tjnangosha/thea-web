@@ -1,18 +1,10 @@
 import { Flex, Skeleton, Spin, Tag, Typography, theme } from "antd";
 import { CheckCircleOutlined, PoweroffOutlined } from "@ant-design/icons";
 import { useTranslate } from "@refinedev/core";
-import type { ICourier } from "../../../interfaces";
 import { useConfigProvider } from "../../../context";
 import { BikeWhiteIcon } from "../../icons";
 
-type Status = ICourier["status"];
-
-type Props = {
-  value?: Status;
-  isLoading?: boolean;
-};
-
-export const CourierStatus = ({ value, isLoading }: Props) => {
+export const CourierStatus = ({ value, isLoading }: any) => {
   const t = useTranslate();
   const { token } = theme.useToken();
   const { mode } = useConfigProvider();
@@ -48,6 +40,7 @@ export const CourierStatus = ({ value, isLoading }: Props) => {
   };
 
   const valueText = value?.text || "Offline";
+  // @ts-ignore
   const currentVariant = variant[valueText];
   const { tagColor, tagTextColor, icon } = currentVariant;
 

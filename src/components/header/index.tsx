@@ -54,7 +54,7 @@ export const Header: React.FC = () => {
   const { i18n } = useTranslation();
   const locale = useGetLocale();
   const changeLanguage = useSetLocale();
-  const { data: user } = useGetIdentity<IIdentity>();
+  const { data: user } = useGetIdentity();
   const screens = useBreakpoint();
   const t = useTranslate();
 
@@ -86,7 +86,7 @@ export const Header: React.FC = () => {
   const [value, setValue] = useState<string>("");
   const [options, setOptions] = useState<IOptions[]>([]);
 
-  const { refetch: refetchOrders } = useList<IOrder>({
+  const { refetch: refetchOrders } = useList({
     resource: "orders",
     config: {
       filters: [{ field: "q", operator: "contains", value }],
@@ -115,7 +115,7 @@ export const Header: React.FC = () => {
     },
   });
 
-  const { refetch: refetchStores } = useList<IStore>({
+  const { refetch: refetchStores } = useList({
     resource: "stores",
     config: {
       filters: [{ field: "q", operator: "contains", value }],
@@ -139,7 +139,7 @@ export const Header: React.FC = () => {
     },
   });
 
-  const { refetch: refetchCouriers } = useList<ICourier>({
+  const { refetch: refetchCouriers } = useList({
     resource: "couriers",
     config: {
       filters: [{ field: "q", operator: "contains", value }],
@@ -249,9 +249,15 @@ export const Header: React.FC = () => {
 
             <Space size={screens.md ? 16 : 8} align="center">
               <Text ellipsis className={styles.userName}>
-                {user?.name}
+                {
+                  // @ts-ignore
+                  user?.name
+                }
               </Text>
-              <Avatar size="large" src="https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_1280.png" alt={user?.name} />
+              <Avatar size="large" src="https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_1280.png" alt={
+                // @ts-ignore
+                user?.name
+              }/>
             </Space>
           </Space>
         </Col>

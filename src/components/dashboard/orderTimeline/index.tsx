@@ -19,8 +19,6 @@ import {
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import InfiniteScroll from "react-infinite-scroll-component";
-import type { IOrder } from "../../../interfaces";
-import { OrderStatus } from "../../order/status";
 
 dayjs.extend(relativeTime);
 
@@ -33,7 +31,7 @@ export const OrderTimeline = ({ height = "432px" }: Props) => {
   const { show } = useNavigation();
 
   const { data, isLoading, hasNextPage, fetchNextPage } =
-    useInfiniteList<IOrder>({
+    useInfiniteList({
       resource: "orders",
       sorters: [
         {
@@ -82,6 +80,7 @@ export const OrderTimeline = ({ height = "432px" }: Props) => {
           renderItem={(item) => {
             return (
               <List.Item
+                // @ts-ignore
                 onClick={() => show("orders", item.id)}
                 style={{
                   cursor: "pointer",
@@ -114,7 +113,7 @@ export const OrderTimeline = ({ height = "432px" }: Props) => {
                     }}
                   >
                     <div style={{ width: "128px" }}>
-                      <OrderStatus status={item.status.text} />
+                      {/* <OrderStatus status={item.status.text} /> */}
                     </div>
                     <Typography.Text strong>
                       #{item.orderNumber}

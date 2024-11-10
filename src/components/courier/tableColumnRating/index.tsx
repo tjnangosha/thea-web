@@ -1,13 +1,8 @@
 import { Rate } from "antd";
 import { useList } from "@refinedev/core";
-import type { ICourier, IReview } from "../../../interfaces";
 
-type Props = {
-  courier?: ICourier;
-};
-
-export const CourierTableColumnRating = (props: Props) => {
-  const { data, isLoading } = useList<IReview>({
+export const CourierTableColumnRating = (props: any) => {
+  const { data, isLoading } = useList({
     resource: "reviews",
     filters: [
       {

@@ -1,10 +1,9 @@
 import { useShow, useNavigation } from "@refinedev/core";
 import { Flex, Grid } from "antd";
-import type { IUser, ResponseSubject } from "../../interfaces";
+import type { ResponseSubject } from "../../interfaces";
 import {
   SubjectInfoList,
   SubjectInfoSummary,
-  CustomerOrderHistory,
   Drawer,
 } from "../../components";
 
@@ -16,7 +15,7 @@ export const SubjectShow = () => {
   });
 
   const { data } = queryResult;
-  const user = data?.data;
+  const user = data?.data as ResponseSubject;
 
   return (
     <Drawer

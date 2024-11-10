@@ -53,8 +53,11 @@ const renderAuthContent = (content: React.ReactNode) => {
 export const AuthPage: React.FC<AuthProps> = ({ 
   type, 
   formProps,
+  // @ts-ignore
   registerLink,
+  // @ts-ignore
   forgotPasswordLink,
+  // @ts-ignore
   rememberMe,
 }) => {
   return (
