@@ -1,10 +1,10 @@
 import { Row, Col, theme, Dropdown, type MenuProps, Button, Flex } from "antd";
 import { useTranslation } from "react-i18next";
-import { useMemo, useState } from "react";
+import { useEffect } from "react";
 import { List, NumberField } from "@refinedev/antd";
 import { useApiUrl, useCustom } from "@refinedev/core";
-import dayjs from "dayjs";
 import { Bar } from 'react-chartjs-2';
+import { Link } from "react-router-dom";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -23,6 +23,7 @@ import iconDrivers from "../../icons/icon_drivers.svg";
 import iconTests from "../../icons/icon_tests.svg";
 import iconDiseases from "../../icons/icon_diseases.svg";
 import iconUsers from "../../icons/icon_users.svg";
+import { usePageTitle } from "../../hooks";
 
 type Props = {
   weeklyStats: ResponseWeeklyStat[]
@@ -80,29 +81,37 @@ export const DashboardPage: React.FC = () => {
   const API_URL = useApiUrl();
 
   const { data } = useCustom<ResponseOverview>({
-    url: `${API_URL}/api/overview`,
+    url: `${API_URL}/api/overview/`,
     method: "get",
   });
 
-  console.log("weekly stats: ",  data)
+  usePageTitle("Overview | Thea");
 
   return (
     <>
       <Row gutter={16} justify={"center"}>
         <Col xs={24} sm={12} md={6}>
-          <CardWithMetrics icon={iconDrivers} metric="Subjects" value={data?.data.num_subjects} />
+          <Link to="/subjects">
+            <CardWithMetrics icon={iconDrivers} metric="Subjects" value={data?.data.num_subjects} />
+          </Link>
         </Col>
         <Col xs={24} sm={12} md={6}>
-          <CardWithMetrics icon={iconTests} metric="Tests" value={data?.data.num_tests} />
+          <Link to="/tests">
+            <CardWithMetrics icon={iconTests} metric="Tests" value={data?.data.num_tests} />
+          </Link>
         </Col>
         <Col xs={24} sm={12} md={6}>
-          <CardWithMetrics
-            icon={iconDiseases}
-            metric="Diseases"
-            value="COVID-19" />
+          <Link to="">
+            <CardWithMetrics
+              icon={iconDiseases}
+              metric="Diseases"
+              value="COVID-19" />
+          </Link>
         </Col>
         <Col xs={24} sm={12} md={6}>
-          <CardWithMetrics icon={iconUsers} metric="Users" value={data?.data.num_users} />
+          <Link to="">
+            <CardWithMetrics icon={iconUsers} metric="Users" value={data?.data.num_users} />
+          </Link>
         </Col>
       </Row>
       {

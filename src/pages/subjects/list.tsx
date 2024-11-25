@@ -31,8 +31,9 @@ import {
 import type { ResponseSubjectFilterVariables, ResponseSubject } from "../../interfaces";
 import { EyeOutlined, FilterOutlined } from "@ant-design/icons";
 import { PaginationTotal, UserStatus } from "../../components";
-import { useState, type PropsWithChildren } from "react";
+import { useState, type PropsWithChildren, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { usePageTitle } from "../../hooks";
 
 export const SubjectList = ({ children }: PropsWithChildren) => {
   const go = useGo();
@@ -47,7 +48,6 @@ export const SubjectList = ({ children }: PropsWithChildren) => {
     pagination: { current: 1, pageSize: 10, /* mode: "server",*/ },
     sorters: { initial: [{ field: "Name", order: "asc" }] },
     onSearch: (searchFormValues) => {
-      // console.log("search form values: ", searchFormValues)
       const filters: CrudFilters = []
       const { name } = searchFormValues
 
@@ -62,6 +62,8 @@ export const SubjectList = ({ children }: PropsWithChildren) => {
       return filters
     },
   });
+
+  usePageTitle("Subjects | Thea");
 
   return (
     <>

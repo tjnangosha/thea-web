@@ -13,7 +13,7 @@ export const dataProvider: DataProvider = {
       return { data: {}, total: 0 };
     }
 
-    const response = await fetch(`${API_URL}/api/${resource}/${id}`, {
+    const response = await fetch(`${API_URL}/api/${resource}/${id}/`, {
       headers: {
         "Authorization": `Bearer ${getAccessToken()}`,
         "Content-Type": "application/json",
@@ -59,7 +59,7 @@ export const dataProvider: DataProvider = {
     }
 
     const response = await fetch(
-      `${API_URL}/api/${resource}?${params.toString()}/`,
+      `${API_URL}/api/${resource}/?${params.toString()}/`,
       {
         headers: {
           "Authorization": `Bearer ${getAccessToken()}`,

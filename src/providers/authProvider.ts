@@ -4,7 +4,6 @@ import { notification } from "antd";
 export const TOKEN_KEY = "THEA_TOKEN";
 export const USER_DETAILS_KEY = "THEA_USER";
 
-// TODO; change this for both prod and dev. find a robust way to do this!
 export const API_URL = "http://localhost:8000";
 
 export const authProvider: AuthProvider = {

@@ -1,0 +1,14 @@
+services:
+  thea_web:
+    build: .
+    image: project-thea-web
+    container_name: thea_web
+    ports:
+      - 4174:4173
+    networks:
+      - thea_api_prod_thea-network_prod
+
+networks:
+  thea_api_prod_thea-network_prod:
+    external: true
+

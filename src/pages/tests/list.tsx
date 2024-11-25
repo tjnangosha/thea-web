@@ -18,8 +18,10 @@ import {
 } from "@refinedev/antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { Table, Input, Select, Typography, theme, InputNumber, Button } from "antd";
+import { useEffect } from "react";
 
 import {ResponseTest} from "../../interfaces";
+import { usePageTitle } from "../../hooks";
 
 export const TestList = () => {
   const { token } = theme.useToken();
@@ -28,6 +30,8 @@ export const TestList = () => {
 
   const t = useTranslate();
   const { show } = useNavigation();
+
+  usePageTitle("Tests | Thea");
 
   return (
     <List
