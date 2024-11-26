@@ -2,6 +2,7 @@ import { AuthPage as AntdAuthPage, type AuthProps } from "@refinedev/antd";
 import { Flex } from "antd";
 import { Link } from "react-router-dom";
 import { TheaLogoIcon, TheaLogoText } from "../../components";
+import { usePageTitle } from "../../hooks";
 
 const authWrapperProps = {
   style: {
@@ -60,6 +61,8 @@ export const AuthPage: React.FC<AuthProps> = ({
   // @ts-ignore
   rememberMe,
 }) => {
+  usePageTitle("Thea")
+
   return (
     <AntdAuthPage
       type={type}

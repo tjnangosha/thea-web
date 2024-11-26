@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import L from 'leaflet'
 import { ResponseLocation, ResponseSubjectsLocationLatest } from '../../interfaces';
 import { API_URL } from '../../providers';
-import { usePageTitle } from '../../hooks';
+import { useGetLatestLocations, usePageTitle } from '../../hooks';
 
 const CustomMarker = L.icon({
     iconUrl: "https://static.vecteezy.com/system/resources/previews/010/977/110/non_2x/blue-gradient-circle-free-png.png",
@@ -13,10 +13,7 @@ const CustomMarker = L.icon({
 export const HotspotsPage = () => {
     usePageTitle("Hotspots | Thea");
 
-    const { data } = useCustom<ResponseSubjectsLocationLatest>({
-        url: `${API_URL}/api/subjects/latest-locations/`,
-        method: "get",
-    });
+    const { data } = useGetLatestLocations()
 
     return (
         <div id="map">
@@ -32,9 +29,6 @@ export const HotspotsPage = () => {
                     especially when all of them are rendered at once when the map is
                     being drawn the first time.
                     that is obviously not what we want.
-
-                    We had also planned to have something a long poll/ws connection
-                    to update this map in real time.
                  */}
                 {data?.data.data.map((position, index) => {
                     return (<Marker key={index} position={[position.latitude, position.longitude]} icon={CustomMarker}>
