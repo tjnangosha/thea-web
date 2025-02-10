@@ -32,6 +32,7 @@ export interface ResponseSubject{
 export interface ResponseSubjectFilterVariables{
   id: string,
   name: string,
+  date: string
 }
 
 export interface ResponseWeeklyStat{

@@ -105,7 +105,7 @@ export const SubjectList = ({ children }: PropsWithChildren) => {
                 {value}
               </Typography.Text>
             )}
-            // defaultFilteredValue={getDefaultFilter("orderNumber", filters, "eq")}
+            defaultFilteredValue={getDefaultFilter("orderNumber", filters, "eq")}
             />
           <Table.Column
             key="name"
