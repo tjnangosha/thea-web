@@ -6,6 +6,7 @@ import { start } from 'repl';
 
 export const useGetLatestLocations = (subjectId?: string, startDate?: string, endDate?: string) => {
     const { open } = useNotification();
+    const showSingleSubjectLocations = !!subjectId && !!startDate && !!endDate
     
     let url: string
     if (subjectId && startDate && endDate) {
@@ -38,6 +39,6 @@ export const useGetLatestLocations = (subjectId?: string, startDate?: string, en
             },
         },
     });
-    
-    return { data, error};
+
+    return { data, error, showSingleSubjectLocations };
 };

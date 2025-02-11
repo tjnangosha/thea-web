@@ -1,7 +1,6 @@
 import { CrudFilters, HttpError, useCustom } from '@refinedev/core';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Polyline } from 'react-leaflet'
 import L from 'leaflet'
-import { ResponseLocation, ResponseSubject, ResponseSubjectFilterVariables, ResponseSubjectsLocationLatest } from '../../interfaces';
 import { API_URL } from '../../providers';
 import { useGetLatestLocations, usePageTitle } from '../../hooks';
 import { useRef, useState } from 'react';
@@ -46,7 +45,7 @@ export const HotspotsPage = () => {
     const [subjectId, setSubjectId] = useState();
     const [coordsStartDate, setcoordsStartDate] = useState()
     const [coordsEndDate, setcoordsEndDate] = useState()
-    const { data } = useGetLatestLocations(subjectId, coordsStartDate, coordsEndDate)
+    const { data, showSingleSubjectLocations } = useGetLatestLocations(subjectId, coordsStartDate, coordsEndDate)
     const mapRef = useRef(null);
 
     const toggleMapFullScreen = () => {
@@ -93,6 +92,15 @@ export const HotspotsPage = () => {
             </Row>
             <div id="map" ref={mapRef}>
                 <MapContainer center={[0.3476, 32.5825]} zoom={10} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
+                    {
+                        showSingleSubjectLocations && 
+                        <Polyline 
+                            positions={data?.data.data.map((position) => [position.latitude, position.longitude])}
+                            color="blue"
+                            weight={3}
+                            opacity={0.7}
+                        />
+                    }
                     <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
                     {/* TODO: this could be a subject for some optimisation.
