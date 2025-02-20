@@ -1,18 +1,30 @@
 import { CrudFilters, HttpError, useCustom } from '@refinedev/core';
-import { MapContainer, TileLayer, Marker, Polyline } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Polyline, LayersControl, Popup, LayerGroup } from 'react-leaflet'
 import L from 'leaflet'
 import { API_URL } from '../../providers';
-import { useGetLatestLocations, usePageTitle } from '../../hooks';
+import { useGetLatestLocations, usePageTitle, useGetLatestSnappedLocations } from '../../hooks';
 import { useRef, useState } from 'react';
 import { Row , Form, Input, Button, DatePicker} from 'antd';
 import { FilterOutlined } from "@ant-design/icons";
 
-const CustomMarker = L.icon({
-    iconUrl: "https://static.vecteezy.com/system/resources/previews/010/977/110/non_2x/blue-gradient-circle-free-png.png",
-    iconSize: [15, 15], // we could so something like adjust this size on map zoom
+const MarkerCoarseLocation = L.divIcon({
+    html: `<svg viewBox="0 0 24 24" width="24" height="24">
+      <circle cx="12" cy="12" r="10" fill="#2196F3" opacity="0.8"/>
+    </svg>`,
+    className: "",
+    iconSize: [24, 24],
+  });
+
+const MarkerSnappedLocation = L.divIcon({
+    html: `<svg viewBox="0 0 24 24" width="24" height="24">
+      <circle cx="12" cy="12" r="10" fill="#12e38c" opacity="0.8"/>
+    </svg>`,
+    className: "",
+    iconSize: [24, 24],
 })
 
-const ToggleMapFullScreenButton = ({ toggleMapFullScreen }) => {
+
+const ToggleMapFullScreenButton = ({ toggleMapFullScreen }: any) => {
     return <div style={{
         position: 'absolute',
         zIndex: 1000,
@@ -39,13 +51,25 @@ const ToggleMapFullScreenButton = ({ toggleMapFullScreen }) => {
     </div>
 }
 
+// const calculateMapCenter = (points) => {
+//     if (!points || points.length === 0) {
+//         return [0.3476, 32.5825]; // Default center coordinates
+//     }
+
+//     const sumLat = points.reduce((sum, point) => sum + point.latitude, 0);
+//     const sumLng = points.reduce((sum, point) => sum + point.longitude, 0);
+    
+//     return [sumLat / points.length, sumLng / points.length];
+// };
+
 export const HotspotsPage = () => {
     usePageTitle("Hotspots | Thea");
 
     const [subjectId, setSubjectId] = useState();
     const [coordsStartDate, setcoordsStartDate] = useState()
     const [coordsEndDate, setcoordsEndDate] = useState()
-    const { data, showSingleSubjectLocations } = useGetLatestLocations(subjectId, coordsStartDate, coordsEndDate)
+    const { locations, showSingleSubjectLocations } = useGetLatestLocations(subjectId, coordsStartDate, coordsEndDate)
+    const { snappedLocations, showSingleSubjectSnappedLocations } = useGetLatestSnappedLocations(subjectId, coordsStartDate, coordsEndDate)
     const mapRef = useRef(null);
 
     const toggleMapFullScreen = () => {
@@ -53,6 +77,7 @@ export const HotspotsPage = () => {
             if (document.fullscreenElement) {
                 document.exitFullscreen();
             } else {
+                // @ts-expect-error
                 mapRef.current?.requestFullscreen();
             }
         }
@@ -91,29 +116,40 @@ export const HotspotsPage = () => {
                 </Form>
             </Row>
             <div id="map" ref={mapRef}>
-                <MapContainer center={[0.3476, 32.5825]} zoom={10} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
-                    {
-                        showSingleSubjectLocations && 
-                        <Polyline 
-                            positions={data?.data.data.map((position) => [position.latitude, position.longitude])}
-                            color="blue"
-                            weight={3}
-                            opacity={0.7}
-                        />
-                    }
+                <MapContainer center={[0.3476, 32.5825]} zoom={20} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
                     <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-
-                    {/* TODO: this could be a subject for some optimisation.
-                        Many markers cause the rendering to be very slow
-                        especially when all of them are rendered at once when the map is
-                        being drawn the first time.
-                        that is obviously not what we want.https://youtu.be/lTRiuFIWV54?si=e8bJSUWT796J0m6G
-                    */}
-                    {data?.data.data.map((position, index) => {
-                        return (<Marker key={index} position={[position.latitude, position.longitude]} icon={CustomMarker}>
-                            {/* <Popup>A pretty CSS3 popup. <br /> Easily customizable.</Popup> */}
-                        </Marker>);
-                    })}
+                    <LayersControl position="bottomright">
+                        <LayersControl.Overlay name="Coarse locations" checked>
+                            <LayerGroup>
+                                {showSingleSubjectLocations && 
+                                    <Polyline 
+                                        positions={locations?.data.data.map((position) => [position.latitude, position.longitude])}
+                                        color="#2196F3"
+                                        weight={3}
+                                        opacity={0.7}
+                                />}
+                                {locations?.data.data.map((position, index) => {
+                                    return (<Marker key={index} position={[position.latitude, position.longitude]} icon={MarkerCoarseLocation}>
+                                    </Marker>);
+                                })}
+                            </LayerGroup>
+                        </LayersControl.Overlay>
+                        <LayersControl.Overlay name="Snapped locations" checked>
+                            <LayerGroup>
+                                {showSingleSubjectSnappedLocations &&
+                                    <Polyline 
+                                        positions={snappedLocations?.data.data.map((position) => [position.latitude, position.longitude])}
+                                        color="#12e38c"
+                                        weight={3}
+                                        opacity={0.7}
+                                />}
+                                {snappedLocations?.data.data.map((position, index) => {
+                                    return (<Marker key={index} position={[position.latitude, position.longitude]} icon={MarkerSnappedLocation}>
+                                    </Marker>);
+                                })}
+                            </LayerGroup>
+                        </LayersControl.Overlay>
+                    </LayersControl>
                     <ToggleMapFullScreenButton toggleMapFullScreen={toggleMapFullScreen} />
                 </MapContainer>
             </div>

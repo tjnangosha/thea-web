@@ -4,19 +4,19 @@ import { ResponseSubjectsLocationLatest } from '../../interfaces';
 import { API_URL } from '../../providers';
 import { start } from 'repl';
 
-export const useGetLatestLocations = (subjectId?: string, startDate?: string, endDate?: string) => {
+export const useGetLatestSnappedLocations = (subjectId?: string, startDate?: string, endDate?: string) => {
     const { open } = useNotification();
-    const showSingleSubjectLocations = !!subjectId && !!startDate && !!endDate
+    const showSingleSubjectSnappedLocations = !!subjectId && !!startDate && !!endDate
     
     let url: string
     if (subjectId && startDate && endDate) {
-        url = `${API_URL}/api/subjects/latest-locations/?subject_id=${subjectId}&start_date=${startDate}&end_date=${endDate}`
+        url = `${API_URL}/api/subjects/latest-locations/?type="snapped"&subject_id=${subjectId}&start_date=${startDate}&end_date=${endDate}`
     } else {
-        url = `${API_URL}/api/subjects/latest-locations/`
+        url = `${API_URL}/api/subjects/latest-locations/?type="snapped"`
     }
 
     const createNotificationErrorMessage = () => {
-        if(url !== `${API_URL}/api/subjects/latest-locations/`){
+        if(url !== `${API_URL}/api/subjects/latest-locations/?type="snapped"`){
             return `Could not find location history for subject with id ${subjectId} between ${startDate} and ${endDate}`
         }
 
@@ -40,5 +40,5 @@ export const useGetLatestLocations = (subjectId?: string, startDate?: string, en
         },
     });
 
-    return { locations: data, error, showSingleSubjectLocations };
+    return { snappedLocations: data, error, showSingleSubjectSnappedLocations };
 };
