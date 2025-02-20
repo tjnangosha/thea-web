@@ -123,12 +123,14 @@ export const HotspotsPage = () => {
                             <LayerGroup>
                                 {showSingleSubjectLocations && 
                                     <Polyline 
+                                        // @ts-ignore
                                         positions={locations?.data.data.map((position) => [position.latitude, position.longitude])}
                                         color="#2196F3"
                                         weight={3}
                                         opacity={0.7}
                                 />}
                                 {locations?.data.data.map((position, index) => {
+                                    // @ts-ignore
                                     return (<Marker key={index} position={[position.latitude, position.longitude]} icon={MarkerCoarseLocation}>
                                     </Marker>);
                                 })}
@@ -138,13 +140,15 @@ export const HotspotsPage = () => {
                             <LayerGroup>
                                 {showSingleSubjectSnappedLocations &&
                                     <Polyline 
-                                        positions={snappedLocations?.data.data.map((position) => [position.latitude, position.longitude])}
+                                        // @ts-ignore
+                                        positions={snappedLocations?.data.data.map((position) => [position.snapped_latitude, position.snapped_longitude])}
                                         color="#12e38c"
                                         weight={3}
                                         opacity={0.7}
                                 />}
                                 {snappedLocations?.data.data.map((position, index) => {
-                                    return (<Marker key={index} position={[position.latitude, position.longitude]} icon={MarkerSnappedLocation}>
+                                    // @ts-ignore
+                                    return (<Marker key={index} position={[position.snapped_latitude, position.snapped_longitude]} icon={MarkerSnappedLocation}>
                                     </Marker>);
                                 })}
                             </LayerGroup>

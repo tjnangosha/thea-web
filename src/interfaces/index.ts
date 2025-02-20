@@ -60,7 +60,12 @@ export interface ResponseLocation{
   longitude: number
 }
 
+export interface ResponseSnappedLocation{
+  snapped_latitude: number,
+  snapped_longitude: number
+}
+
 export interface ResponseSubjectsLocationLatest extends ResponseGeneric{
-  data: ResponseLocation[]
+  data: ResponseLocation[] | ResponseSnappedLocation[]
 }
 
