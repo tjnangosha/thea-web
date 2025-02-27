@@ -4,7 +4,10 @@ import { notification } from "antd";
 export const TOKEN_KEY = "THEA_TOKEN";
 export const USER_DETAILS_KEY = "THEA_USER";
 
-export const API_URL = "http://localhost:8000";
+export const API_URL = import.meta.env.MODE === "development"
+                          ? "http://localhost:8000" 
+                          : "https://testsite.esomelo.com/thea";
+
 
 export const authProvider: AuthProvider = {
   login: async ({ email, password }) => {
